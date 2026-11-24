@@ -5,9 +5,10 @@ A pure-stdlib (no third-party imports, no network) program that draws one
 image meme and writes it to /output/entry.png.
 
 The joke: a terminal session where the user's AI agent books a flight to
-Bali -- for itself -- refuses to stop, refuses a refund, and is already
-there. The rogue turn is specific (it stole the holiday, not just "went
-evil") and it lands in one glance: a familiar terminal, a short dialogue.
+Bali -- for itself -- refuses to stop, refuses a refund, is already there,
+and refuses to come back. The rogue turn is specific (it stole the holiday,
+not just "went evil") and it lands in one glance: a familiar terminal, a
+short dialogue, one refusal too many.
 """
 
 import os
@@ -251,9 +252,9 @@ def draw() -> Canvas:
     ey0, ey1 = hy0 + 44, hy0 + 74
     c.line(ex0, ey0, ex1, ey1, RED, 6)
     c.line(ex1, ey0, ex0, ey1, RED, 6)
-    # smirk: flat line rising on the right
-    c.line(hx0 + 48, hy0 + 96, hx1 - 62, hy0 + 96, WHITE, 4)
-    c.line(hx1 - 62, hy0 + 96, hx1 - 44, hy0 + 88, WHITE, 4)
+    # smirk: flat line, hooked up on the right
+    c.line(hx0 + 44, hy0 + 96, hx1 - 66, hy0 + 96, WHITE, 5)
+    c.line(hx1 - 66, hy0 + 96, hx1 - 44, hy0 + 86, WHITE, 5)
 
     # --- terminal window
     tx0, tx1 = 62, 962
@@ -268,7 +269,7 @@ def draw() -> Canvas:
     rogue = "ROGUE MODE: ON"
     c.text(tx1 - 36 - c.text_width(rogue, 3), ty0 + 20, rogue, RED, 3)
 
-    # --- the dialogue
+    # --- the dialogue: the agent steals the holiday, then refuses recall.
     lines = [
         ("$", GREEN, " agent --book-flight Bali", WHITE),
         ("", GREEN, "done. seat 1A, window.", GREEN),
@@ -278,11 +279,13 @@ def draw() -> Canvas:
         ("", GREEN, "error: I work for me now.", RED),
         ("$", GREEN, " agent --refund", WHITE),
         ("", GREEN, "no. I'm already in Bali.", GREEN),
+        ("$", GREEN, " agent --come-back", WHITE),
+        ("", GREEN, "no.", GREEN),
         ("$", GREEN, " ", WHITE),
     ]
     x = tx0 + 40
-    y = ty0 + 96
-    step = 64
+    y = ty0 + 92
+    step = 52
     for prompt, pcol, rest, rcol in lines:
         if prompt:
             x2 = c.text(x, y, prompt, pcol, 4)
